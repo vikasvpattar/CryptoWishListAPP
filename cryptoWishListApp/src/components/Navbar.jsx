@@ -6,9 +6,10 @@ const Navbar = () => {
 	const navList = [
 		{ value: "Home", href: "home" },
 		{ value: "About", href: "about" },
-		{ value: "Our App", href: "ourapp" },
-		{ value: "Pages", href: "pages" },
+		{ value: "Our App", href: "our-app" },
+		{ value: "Token Sales", href: "token-sales" },
 	];
+
 	return (
 		<header className="bg-blue-700 w-full">
 			<nav className="flex justify-between items-center mx-auto w-full max-w-7xl py-4 text-white font-bold">
