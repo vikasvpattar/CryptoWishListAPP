@@ -1,22 +1,25 @@
 import React, { useEffect, useState } from "react";
 import heroImage from "../assets/MockupheroImage.png";
-
+import { getAllData } from "../features/cryptoData/cryptoDataSlice";
 import CryptoData from "../components/CryptoData";
+import { useDispatch, useSelector } from "react-redux";
 
 const Home = () => {
+	
+
 	return (
-		<div className="bg-gray-900	 px-5">
-			<div className="flex flex-col md:flex-row gap-3 justify-between  items-center text-white w-full max-w-7xl mx-auto py-4">
+		<div className="bg-gray-900	 px-5 mx-auto">
+			<div className="flex flex-col md:flex-row gap-3 justify-between  items-center text-white w-full max-w-6xl mx-auto py-4">
 				<div>
-					<h1 className="text-9xl w-1/2 font-bold">
+					<h1 className="lg:text-9xl text-7xl lg:w-1/2 font-bold">
 						Track Crypto <br />
-						<span className="text-blue-700 whitespace-nowrap leading-tight">
+						<span className="text-blue-700 lg:whitespace-nowrap leading-tight">
 							Real Time.
 						</span>
 					</h1>
 				</div>
-				<div className="w-1/2">
-					<img src={heroImage} alt="cryptoImage" className="w-full" />
+				<div className="md:w-1/2 max-w-[500px]">
+					<img src={heroImage} alt="cryptoImage" className="w-full " />
 				</div>
 			</div>
 

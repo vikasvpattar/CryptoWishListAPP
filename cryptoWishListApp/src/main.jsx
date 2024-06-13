@@ -8,6 +8,9 @@ import About from "./pages/About.jsx";
 import OurApp from "./pages/OurApp.jsx";
 
 import ChartPage from "./pages/ChartPage.jsx";
+import CoinsPage from "./pages/CoinsPage.jsx";
+import { store } from './app/store.js'
+import {Provider} from 'react-redux'
 
 const router = createBrowserRouter([
 	{
@@ -19,11 +22,14 @@ const router = createBrowserRouter([
 			{ path: "/about", element: <About /> },
 			{ path: "/our-app", element: <OurApp /> },
 			{ path: "/chart/:id", element: <ChartPage /> },
+			{ path: "/coins", element: <CoinsPage /> },
 		],
 	},
 ]);
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
-		<RouterProvider router={router} />
+		<Provider store={store}>
+			<RouterProvider router={router} />
+		</Provider>
 	</React.StrictMode>
 );

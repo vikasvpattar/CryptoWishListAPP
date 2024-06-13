@@ -7,9 +7,9 @@ import { MdCancel } from "react-icons/md";
 const Navbar = () => {
 	const navList = [
 		{ value: "Home", href: "home" },
+		{ value: "Coins", href: "coins" },
 		{ value: "About", href: "about" },
 		{ value: "Our App", href: "our-app" },
-		{ value: "Token Sales", href: "token-sales" },
 	];
 	const FiatCurrency = [
 		{ label: "USD", id: "usd" },
@@ -21,7 +21,7 @@ const Navbar = () => {
 
 	return (
 		<header className="bg-blue-700 w-full sticky z-30 top-0 px-5">
-			<nav className="flex justify-between items-center mx-auto w-full max-w-7xl py-4 text-white font-bold ">
+			<nav className="flex justify-between items-center mx-auto w-full max-w-6xl py-4 text-white font-bold ">
 				<div className="w-32">
 					<img src={cryptos} alt="Cryptos" />
 				</div>
