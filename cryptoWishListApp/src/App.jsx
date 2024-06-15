@@ -8,13 +8,15 @@ import { getAllData } from "./features/cryptoData/cryptoDataSlice";
 
 function App() {
 	const dispatch = useDispatch();
+
 	useEffect(() => {
-		dispatch(getAllData);
-	}, []);
-	const Cdata = useSelector((state) => state);
-	console.log(Cdata.CryptoData.list);
+		dispatch(getAllData());
+	}, [dispatch]); 
+
+
+
 	return (
-		<div className="bg-gray-900">
+		<div className="">
 			<Navbar />
 			<Outlet />
 		</div>

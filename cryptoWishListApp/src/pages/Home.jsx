@@ -3,8 +3,10 @@ import heroImage from "../assets/MockupheroImage.png";
 import { getAllData } from "../features/cryptoData/cryptoDataSlice";
 import CryptoData from "../components/CryptoData";
 import { useDispatch, useSelector } from "react-redux";
+import Loader from "../components/Loader";
 
 const Home = () => {
+	const { list, isLoading, isError } = useSelector((state) => state.CryptoData); 
 	
 
 	return (
@@ -22,8 +24,13 @@ const Home = () => {
 					<img src={heroImage} alt="cryptoImage" className="w-full " />
 				</div>
 			</div>
-
-			<CryptoData />
+			{isLoading ? (
+				<Loader />
+			) : isError ? (
+				<div className="error">Error: {isError}</div>
+			) : (
+				<CryptoData apiData={list} isHomePage={true} />
+			)}
 		</div>
 	);
 };

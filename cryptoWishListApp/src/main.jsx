@@ -9,8 +9,9 @@ import OurApp from "./pages/OurApp.jsx";
 
 import ChartPage from "./pages/ChartPage.jsx";
 import CoinsPage from "./pages/CoinsPage.jsx";
-import { store } from './app/store.js'
-import {Provider} from 'react-redux'
+import { store } from "./app/store.js";
+import { Provider } from "react-redux";
+import Loader from "./components/Loader.jsx";
 
 const router = createBrowserRouter([
 	{
@@ -23,6 +24,7 @@ const router = createBrowserRouter([
 			{ path: "/our-app", element: <OurApp /> },
 			{ path: "/chart/:id", element: <ChartPage /> },
 			{ path: "/coins", element: <CoinsPage /> },
+			{ path: "/loader", element: <Loader /> },
 		],
 	},
 ]);

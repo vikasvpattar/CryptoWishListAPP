@@ -22,9 +22,11 @@ const Navbar = () => {
 	return (
 		<header className="bg-blue-700 w-full sticky z-30 top-0 px-5">
 			<nav className="flex justify-between items-center mx-auto w-full max-w-6xl py-4 text-white font-bold ">
-				<div className="w-32">
-					<img src={cryptos} alt="Cryptos" />
-				</div>
+				<NavLink to={"/"}>
+					<div className="w-32">
+						<img src={cryptos} alt="Cryptos" />
+					</div>
+				</NavLink>
 				<div className="hidden md:block">
 					<ul className="flex justify-between gap-4  ">
 						{navList &&
