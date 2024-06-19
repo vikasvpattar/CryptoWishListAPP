@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-const CryptoData = ({ apiData, isHomePage }) => {
+const CryptoData = ({ apiData, isHomePage, searchedItem }) => {
 	const tableHeaderData = ["coin", "Price", "24H High", "24H Low"];
 	const [page, setPage] = useState(1);
 	const itemsPerPage = 10;
+		const filteredData = searchedItem
+			? apiData.filter((data) =>
+					data.name.toLowerCase().includes(searchedItem.toLowerCase())
+			  )
+			: apiData;
 	const totalPages = Math.ceil(apiData.length / itemsPerPage);
 
 	const handleNext = () => {
@@ -42,8 +47,8 @@ const CryptoData = ({ apiData, isHomePage }) => {
 						</tr>
 					</thead>
 					<tbody>
-						{apiData &&
-							apiData
+						{filteredData &&
+							filteredData
 								.slice((page - 1) * itemsPerPage, page * itemsPerPage)
 								.map((data) => (
 									<tr

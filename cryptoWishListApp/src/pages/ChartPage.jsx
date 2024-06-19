@@ -10,8 +10,7 @@ const ChartPage = () => {
 
 	const fetchCryptoPrice = async () =>
 		await axios(
-			`			https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=30&interval=daily
-`
+			`https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=30&interval=daily`
 		)
 			.then((res) => {
 				setApiData(res.data);
