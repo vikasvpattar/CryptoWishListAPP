@@ -1,15 +1,31 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+const tableHeaderData = ["coin", "Price", "24H High", "24H Low"];
+const currencyToLocaleMap = {
+	usd: "en-US",
+	inr: "en-IN",
+};
+const formatNumber = (number, currency) => {
+	const locale = currencyToLocaleMap[currency.toLowerCase()] || "en-US";
+	return new Intl.NumberFormat(locale, {
+		style: "currency",
+		currency: currency.toUpperCase(),
+	}).format(number);
+};
 
 const CryptoData = ({ apiData, isHomePage, searchedItem }) => {
-	const tableHeaderData = ["coin", "Price", "24H High", "24H Low"];
 	const [page, setPage] = useState(1);
+	 const selectedCurrency = useSelector(
+			(state) => state.CryptoData.selectedCurrency
+		);
 	const itemsPerPage = 10;
 		const filteredData = searchedItem
 			? apiData.filter((data) =>
 					data.name.toLowerCase().includes(searchedItem.toLowerCase())
 			  )
-			: apiData;
+		: apiData;
+	
 	const totalPages = Math.ceil(apiData.length / itemsPerPage);
 
 	const handleNext = () => {
@@ -62,9 +78,15 @@ const CryptoData = ({ apiData, isHomePage, searchedItem }) => {
 												{data.name}
 											</div>
 										</th>
-										<td className="px-6 py-4">{data.current_price}</td>
-										<td className="px-6 py-4">{data.high_24h}</td>
-										<td className="px-6 py-4">{data.low_24h}</td>
+										<td className="px-6 py-4">
+											{formatNumber(data.current_price, selectedCurrency)}
+										</td>
+										<td className="px-6 py-4">
+											{formatNumber(data.current_price, selectedCurrency)}
+										</td>
+										<td className="px-6 py-4">
+											{formatNumber(data.current_price, selectedCurrency)}
+										</td>
 										<td className="px-6 py-4 text-right">
 											<Link to={`/chart/${data.id}`}>
 												<button className="font-medium p-2 bg-green-500 text-white whitespace-nowrap">
@@ -85,7 +107,7 @@ const CryptoData = ({ apiData, isHomePage, searchedItem }) => {
 							<li>
 								<button
 									onClick={handlePrevious}
-									className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+									className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 "
 									disabled={page === 1}>
 									Previous
 								</button>
@@ -98,7 +120,7 @@ const CryptoData = ({ apiData, isHomePage, searchedItem }) => {
 											page === i + 1
 												? "text-white bg-blue-500"
 												: "text-gray-500 bg-white"
-										} border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}>
+										} border border-gray-300 hover:bg-gray-100 hover:text-gray-700 `}>
 										{i + 1}
 									</button>
 								</li>

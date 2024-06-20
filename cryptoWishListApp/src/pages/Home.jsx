@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import heroImage from "../assets/MockupheroImage.png";
-import { getAllData } from "../features/cryptoData/cryptoDataSlice";
 import CryptoData from "../components/CryptoData";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Loader from "../components/Loader";
 
 const Home = () => {
-	const { list, isLoading, isError } = useSelector((state) => state.CryptoData); 
-	
+	const { list, isLoading, isError } = useSelector(
+		(state) => state.CryptoData
+	);
 
 	return (
 		<div className="bg-gray-900	 px-5 mx-auto">
@@ -29,7 +29,10 @@ const Home = () => {
 			) : isError ? (
 				<div className="error">Error: {isError}</div>
 			) : (
-				<CryptoData apiData={list} isHomePage={true} />
+				<CryptoData
+					apiData={list}
+					isHomePage={true}
+				/>
 			)}
 		</div>
 	);

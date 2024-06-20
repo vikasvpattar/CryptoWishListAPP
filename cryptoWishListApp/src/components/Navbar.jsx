@@ -1,10 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import cryptos from "../assets/Cryptos.png";
+import {
+	getAllData,
+	setSelectedCurrency,
+} from "../features/cryptoData/cryptoDataSlice";
 import { NavLink } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdCancel } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
 
 const Navbar = () => {
+	const [isNavOpen, setIsNavOpen] = useState(false);
+	const selectedCurrency = useSelector(
+		(state) => state.CryptoData.selectedCurrency
+	);
+
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		dispatch(getAllData(selectedCurrency));
+	}, [dispatch, selectedCurrency]);
+
+	const handleSelect = (e) => {
+		const selectedValue = e.target.value;
+		dispatch(setSelectedCurrency(selectedValue));
+	};
 	const navList = [
 		{ value: "Home", href: "home" },
 		{ value: "Coins", href: "coins" },
@@ -15,9 +35,6 @@ const Navbar = () => {
 		{ label: "USD", id: "usd" },
 		{ label: "INR", id: "inr" },
 	];
-	const [isNavOpen, setIsNavOpen] = useState(false);
-	const [selectedValue, setSelectedValue] = useState("usd");
-	const handleSelect = (e) => setSelectedValue(e.target.value);
 
 	return (
 		<header className="bg-blue-700 w-full sticky z-30 top-0 px-5">
@@ -41,7 +58,7 @@ const Navbar = () => {
 					<select
 						name="currency"
 						id="currency"
-						className=" bg-transparent"
+						className=" bg-transparent py-1 px-2 pe-2  block"
 						onChange={handleSelect}>
 						{FiatCurrency.map((data) => (
 							<option key={data.id} className="bg-blue-500" value={data.id}>
