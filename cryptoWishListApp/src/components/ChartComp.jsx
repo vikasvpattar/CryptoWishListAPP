@@ -17,7 +17,7 @@ const ChartComp = () => {
 				`https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=${currency}&days=30&interval=daily`
 			);
 			setApiData(response.data);
-			setIsLoading(false)
+			setIsLoading(false);
 		} catch (error) {
 			console.error("Error fetching data:", error);
 		}
@@ -32,7 +32,7 @@ const ChartComp = () => {
 		return date.getDate() + "/" + (date.getMonth() + 1);
 	};
 	const price = apiData.prices?.map((data) => data[1]);
-	// console.log(price);
+	
 
 	const firstPrice = price && price.length > 0 ? price[0] : null;
 	const lastPrice = price && price.length > 0 ? price[price.length - 1] : null;
