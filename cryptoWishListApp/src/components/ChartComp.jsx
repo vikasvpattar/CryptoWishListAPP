@@ -2,7 +2,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Line } from "react-chartjs-2";
-import { Chart as ChartJS, Ticks, scales } from "chart.js/auto"; //Dont get rid of this
+//Dont get rid of this
+import { Chart as ChartJS, Ticks, scales } from "chart.js/auto";
 import { useSelector } from "react-redux";
 import Loader from "./Loader";
 
@@ -32,11 +33,10 @@ const ChartComp = () => {
 		return date.getDate() + "/" + (date.getMonth() + 1);
 	};
 	const price = apiData.prices?.map((data) => data[1]);
-	
 
 	const firstPrice = price && price.length > 0 ? price[0] : null;
 	const lastPrice = price && price.length > 0 ? price[price.length - 1] : null;
-	let increase = firstPrice - lastPrice;
+	let increase = lastPrice - firstPrice;
 	const chartData = {
 		labels: apiData.prices?.map((data) => gettingDate(data[0])),
 

@@ -1,17 +1,30 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
+const options = {
+	method: "GET",
+	headers: {
+		accept: "application/json",
+		"x-cg-demo-api-key": "CG-ntsXi9EVwHMMe6NXhyJjvAmU",
+	},
+};
+
 export const getAllData = createAsyncThunk(
 	"getAllData",
-	async (currency = "usd") => {
+	async (currency = "usd", thunkAPI) => {
 		try {
 			const response = await fetch(
-				`https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&order=market_cap_desc&per_page=100&page=1&sparkline=false`
+				`https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&order=market_cap_desc&per_page=100&page=1&sparkline=false`,
+				options
 			);
 			const data = await response.json();
+			if (response.ok) {
+				return data;
+			} else {
+				return thunkAPI.rejectWithValue(response);
+			}
 			// console.log(data);
-			return data;
 		} catch (error) {
-			throw error;
+			return thunkAPI.rejectWithValue(response);
 		}
 	}
 );
@@ -41,6 +54,7 @@ export const cryptoDataSlice = createSlice({
 			})
 			.addCase(getAllData.rejected, (state, action) => {
 				state.isLoading = false;
+				console.log(action);
 				state.isError = action.error.message;
 			});
 	},
