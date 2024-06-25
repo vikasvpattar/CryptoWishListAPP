@@ -10,23 +10,26 @@ const ChartPage = () => {
 	const [apiData, setApiData] = useState({});
 	const [isLoading, setIsLoading] = useState(false);
 	const { id } = useParams();
+	const options = {
+		method: "GET",
+		url: `https://api.coingecko.com/api/v3/coins/${id}`,
+		headers: { accept: "application/json" },
+	};
 
 	const fetchCryptoPrice = async () => {
 		try {
 			setIsLoading(true);
-			const response = await axios.get(
-				`https://api.coingecko.com/api/v3/coins/${id}`
-			);
+			const response = await axios.request(options);
 
 			setApiData(response.data);
 			setIsLoading(false);
-			console.log(response.data);
+			// console.log(response.data);
 		} catch (error) {
 			console.error("Error fetching data:", error);
 		}
 	};
 	const desc = apiData?.description?.en;
-	console.log(apiData);
+	// console.log(apiData);
 	useEffect(() => {
 		fetchCryptoPrice();
 	}, []);

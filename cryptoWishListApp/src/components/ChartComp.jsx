@@ -2,8 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Line } from "react-chartjs-2";
-//Dont get rid of this
-import { Chart as ChartJS, Ticks, scales } from "chart.js/auto";
+import { Chart as ChartJS, Ticks, scales } from "chart.js/auto"; // Don't remove this
 import { useSelector } from "react-redux";
 import Loader from "./Loader";
 
@@ -52,7 +51,7 @@ const ChartComp = () => {
 				borderColor:
 					increase > 1 ? "rgba(57, 255, 57, 0.8)" : "rgba(243, 142, 142, 0.8)",
 				pointRadius: 0,
-				label: id,
+				label: id.charAt(0).toUpperCase() + id.slice(1),
 			},
 		],
 	};
