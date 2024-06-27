@@ -3,17 +3,6 @@ import { useSelector } from "react-redux";
 import formatNumber from "../utilities/CurrencyConvert";
 import { Link } from "react-router-dom";
 const tableHeaderData = ["coin", "Price", "24H High", "24H Low"];
-// const currencyToLocaleMap = {
-// 	usd: "en-US",
-// 	inr: "en-IN",
-// };
-// const formatNumber = (number, currency) => {
-// 	const locale = currencyToLocaleMap[currency.toLowerCase()] || "en-US";
-// 	return new Intl.NumberFormat(locale, {
-// 		style: "currency",
-// 		currency: currency.toUpperCase(),
-// 	}).format(number);
-// };
 
 const CryptoData = ({ apiData, isHomePage, searchedItem }) => {
 	const [page, setPage] = useState(1);

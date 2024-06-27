@@ -11,11 +11,18 @@ const ChartComp = () => {
 	const [apiData, setApiData] = useState({});
 	const [isLoading, setIsLoading] = useState(false);
 	const currency = useSelector((state) => state.CryptoData.selectedCurrency);
+
 	const fetchCryptoPrice = async () => {
+		const options = {
+			method: "GET",
+			url: `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=${currency}&days=30&interval=daily`,
+			headers: {
+				accept: "application/json",
+				"x-cg-demo-api-key": "CG-ntsXi9EVwHMMe6NXhyJjvAmU",
+			},
+		};
 		try {
-			const response = await axios.get(
-				`https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=${currency}&days=30&interval=daily`
-			);
+			const response = await axios.request(options);
 			setApiData(response.data);
 			setIsLoading(false);
 		} catch (error) {
