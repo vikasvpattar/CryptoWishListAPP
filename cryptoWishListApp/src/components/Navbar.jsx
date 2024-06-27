@@ -14,7 +14,7 @@ const Navbar = () => {
 	const selectedCurrency = useSelector(
 		(state) => state.CryptoData.selectedCurrency
 	);
-
+	const storedCurrency = JSON.parse(localStorage.getItem("currencyValue"));
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -23,6 +23,7 @@ const Navbar = () => {
 
 	const handleSelect = (e) => {
 		const selectedValue = e.target.value;
+		localStorage.setItem("currencyValue", JSON.stringify(selectedValue));
 		dispatch(setSelectedCurrency(selectedValue));
 	};
 	const navList = [
@@ -59,6 +60,7 @@ const Navbar = () => {
 						name="currency"
 						id="currency"
 						className=" bg-transparent py-1 px-2 pe-2  block"
+						defaultValue={storedCurrency}
 						onChange={handleSelect}>
 						{FiatCurrency.map((data) => (
 							<option key={data.id} className="bg-blue-500" value={data.id}>

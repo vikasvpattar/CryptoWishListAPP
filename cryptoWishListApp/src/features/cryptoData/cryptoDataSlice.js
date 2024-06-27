@@ -22,24 +22,42 @@ export const getAllData = createAsyncThunk(
 			} else {
 				return thunkAPI.rejectWithValue(response);
 			}
-			// console.log(data);
 		} catch (error) {
-			return thunkAPI.rejectWithValue(response);
+			return thunkAPI.rejectWithValue(error);
 		}
 	}
 );
-
+const initialWishlist =
+	JSON.parse(localStorage.getItem("wishListedCoin")) || [];
+const initialCurrency =
+	JSON.parse(localStorage.getItem("currencyValue")) || "usd";
 export const cryptoDataSlice = createSlice({
 	name: "CryptoData",
 	initialState: {
 		list: [],
 		isLoading: false,
 		isError: null,
-		selectedCurrency: "usd",
+		selectedCurrency: initialCurrency,
+		wishlist: initialWishlist,
 	},
 	reducers: {
 		setSelectedCurrency: (state, action) => {
 			state.selectedCurrency = action.payload;
+		},
+		addToWishlist: (state, action) => {
+			const existingCoin = state.wishlist.find(
+				(item) => item.id === action.payload.id
+			);
+			if (!existingCoin) {
+				state.wishlist.push(action.payload);
+				localStorage.setItem("wishListedCoin", JSON.stringify(state.wishlist));
+			}
+		},
+		removeFromWishlist: (state, action) => {
+			state.wishlist = state.wishlist.filter(
+				(item) => item.id !== action.payload.id
+			);
+			localStorage.setItem("wishListedCoin", JSON.stringify(state.wishlist));
 		},
 	},
 	extraReducers: (builder) => {
@@ -60,5 +78,6 @@ export const cryptoDataSlice = createSlice({
 	},
 });
 
-export const { setSelectedCurrency } = cryptoDataSlice.actions;
+export const { setSelectedCurrency, addToWishlist, removeFromWishlist } =
+	cryptoDataSlice.actions;
 export default cryptoDataSlice.reducer;

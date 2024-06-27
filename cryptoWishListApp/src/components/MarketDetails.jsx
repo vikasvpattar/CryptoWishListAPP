@@ -1,6 +1,8 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import formatNumber from "../utilities/CurrencyConvert";
+import { MdFavoriteBorder } from "react-icons/md";
+import { addToWishlist } from "../features/cryptoData/cryptoDataSlice";
 
 const MarketInfo = ({ label, value }) => (
 	<div className="flex items-center justify-between gap-4 py-2 border-b-2 border-slate-600">
@@ -10,6 +12,7 @@ const MarketInfo = ({ label, value }) => (
 );
 
 const MarketDetails = ({ apiData }) => {
+	const dispatch = useDispatch();
 	const selectedCurrency = useSelector(
 		(state) => state.CryptoData.selectedCurrency
 	);
@@ -18,7 +21,7 @@ const MarketDetails = ({ apiData }) => {
 		return <div>Loading...</div>;
 	}
 
-	const { image, name, symbol, market_cap_rank, market_data } = apiData;
+	const { image, name, symbol, market_cap_rank, market_data, id } = apiData;
 
 	if (!market_data) {
 		return <div>Market data is unavailable</div>;
@@ -37,6 +40,11 @@ const MarketDetails = ({ apiData }) => {
 
 	const priceChangeClass =
 		percentageChange > 0 ? "text-green-600" : "text-red-600";
+	const handleWishList = (id, currentPrice) => {
+		if (id && currentPrice) {
+			dispatch(addToWishlist({ id, currentPrice }));
+		}
+	};
 
 	return (
 		<div className="text-white flex flex-col gap-2 justify-center items-center my-5">
@@ -59,6 +67,17 @@ const MarketDetails = ({ apiData }) => {
 						{percentageChange !== undefined ? `${percentageChange}%` : "N/A"}
 					</span>
 				</div>
+			</div>
+			<div>
+				{apiData && id ? (
+					<button
+						className="p-2 bg-gray-600 rounded-md flex items-center gap-2"
+						onClick={() => handleWishList(id, current_price)}>
+						<MdFavoriteBorder /> Add to WishList
+					</button>
+				) : (
+					""
+				)}
 			</div>
 			<div className="border-2 border-white flex flex-col gap-2 p-4 w-11/12 md:w-1/2 rounded-xl">
 				<MarketInfo
