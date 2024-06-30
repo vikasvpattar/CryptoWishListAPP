@@ -5,12 +5,10 @@ import { useSelector } from "react-redux";
 import Loader from "../components/Loader";
 
 const Home = () => {
-	const { list, isLoading, isError } = useSelector(
-		(state) => state.CryptoData
-	);
+	const { list, isLoading, isError } = useSelector((state) => state.CryptoData);
 
 	return (
-		<div className="bg-gray-900	 px-5 mx-auto">
+		<div className="bg-gray-900	min-h-screen px-5 mx-auto">
 			<div className="flex flex-col md:flex-row gap-3 justify-between  items-center text-white w-full max-w-6xl mx-auto py-4">
 				<div>
 					<h1 className="lg:text-9xl text-7xl lg:w-1/2 font-bold">
@@ -29,10 +27,7 @@ const Home = () => {
 			) : isError ? (
 				<div className="error">Error: {isError}</div>
 			) : (
-				<CryptoData
-					apiData={list}
-					isHomePage={true}
-				/>
+				<CryptoData apiData={list} isHomePage={true} />
 			)}
 		</div>
 	);

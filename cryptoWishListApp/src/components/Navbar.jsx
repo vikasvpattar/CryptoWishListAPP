@@ -29,7 +29,7 @@ const Navbar = () => {
 	const navList = [
 		{ value: "Home", href: "home" },
 		{ value: "Coins", href: "coins" },
-		{ value: "About", href: "about" },
+		{ value: "Wishlist", href: "wishlist" },
 		{ value: "Our App", href: "our-app" },
 	];
 	const FiatCurrency = [

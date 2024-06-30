@@ -2,7 +2,10 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import formatNumber from "../utilities/CurrencyConvert";
 import { MdFavoriteBorder } from "react-icons/md";
-import { addToWishlist } from "../features/cryptoData/cryptoDataSlice";
+import {
+	addToWishlist,
+	removeFromWishlist,
+} from "../features/cryptoData/cryptoDataSlice";
 
 const MarketInfo = ({ label, value }) => (
 	<div className="flex items-center justify-between gap-4 py-2 border-b-2 border-slate-600">
@@ -13,10 +16,12 @@ const MarketInfo = ({ label, value }) => (
 
 const MarketDetails = ({ apiData }) => {
 	const dispatch = useDispatch();
-	const selectedCurrency = useSelector(
-		(state) => state.CryptoData.selectedCurrency
-	);
 
+	const { selectedCurrency, wishlist } = useSelector(
+		(state) => state.CryptoData
+	);
+	const wishListedData = wishlist.map((data) => data.id);
+	// console.log(wishListedData);
 	if (!apiData) {
 		return <div>Loading...</div>;
 	}
@@ -45,6 +50,11 @@ const MarketDetails = ({ apiData }) => {
 			dispatch(addToWishlist({ id, currentPrice }));
 		}
 	};
+	const handleRemoveWishlist = (id) => {
+		if (id) {
+			dispatch(removeFromWishlist(id));
+		}
+	};
 
 	return (
 		<div className="text-white flex flex-col gap-2 justify-center items-center my-5">
@@ -70,11 +80,19 @@ const MarketDetails = ({ apiData }) => {
 			</div>
 			<div>
 				{apiData && id ? (
-					<button
-						className="p-2 bg-gray-600 rounded-md flex items-center gap-2"
-						onClick={() => handleWishList(id, current_price)}>
-						<MdFavoriteBorder /> Add to WishList
-					</button>
+					!wishListedData.includes(id) ? (
+						<button
+							className="p-2 bg-green-600 rounded-md flex items-center gap-2"
+							onClick={() => handleWishList(id, current_price)}>
+							<MdFavoriteBorder /> Add to WishList
+						</button>
+					) : (
+						<button
+							className="p-2 bg-red-600 rounded-md flex items-center gap-2 "
+							onClick={() => handleRemoveWishlist(id)}>
+							<MdFavoriteBorder /> Remove from WishList
+						</button>
+					)
 				) : (
 					""
 				)}

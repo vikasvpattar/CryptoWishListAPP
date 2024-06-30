@@ -4,7 +4,6 @@ import App from "./App.jsx";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home.jsx";
-import About from "./pages/About.jsx";
 import OurApp from "./pages/OurApp.jsx";
 
 import ChartPage from "./pages/ChartPage.jsx";
@@ -12,6 +11,7 @@ import CoinsPage from "./pages/CoinsPage.jsx";
 import { store } from "./app/store.js";
 import { Provider } from "react-redux";
 import Loader from "./components/Loader.jsx";
+import Wishlist from "./pages/Wishlist.jsx";
 
 const router = createBrowserRouter([
 	{
@@ -20,7 +20,7 @@ const router = createBrowserRouter([
 		children: [
 			{ path: "/", element: <Home /> },
 			{ path: "/home", element: <Home /> },
-			{ path: "/about", element: <About /> },
+			{ path: "/wishlist", element: <Wishlist /> },
 			{ path: "/our-app", element: <OurApp /> },
 			{ path: "/chart/:id", element: <ChartPage /> },
 			{ path: "/coins", element: <CoinsPage /> },
