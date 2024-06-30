@@ -24,7 +24,7 @@ const Wishlist = () => {
 				<Loader />
 			) : isError ? (
 				<div className="error">Error: {isError}</div>
-			) : wishlistData ? (
+			) : wishlistData.length > 0 ? (
 				<div>
 					<h1 className="text-white text-2xl font-bold mb-4">
 						Your Whitelisted coin
@@ -113,7 +113,9 @@ const Wishlist = () => {
 					</table>
 				</div>
 			) : (
-				<h1>You haven't added any coin to the wishlist</h1>
+				<h1 className="text-white text-2xl font-bold mb-4">
+					You haven't added any coin to the wishlist
+				</h1>
 			)}
 		</div>
 	);

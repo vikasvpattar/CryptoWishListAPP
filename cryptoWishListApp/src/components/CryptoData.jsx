@@ -1,4 +1,8 @@
 import React, { useState } from "react";
+import {
+	MdKeyboardDoubleArrowLeft,
+	MdKeyboardDoubleArrowRight,
+} from "react-icons/md";
 import { useSelector } from "react-redux";
 import formatNumber from "../utilities/CurrencyConvert";
 import { Link } from "react-router-dom";
@@ -88,45 +92,44 @@ const CryptoData = ({ apiData, isHomePage, searchedItem }) => {
 								))}
 					</tbody>
 				</table>
-
-				{isHomePage ? (
-					""
-				) : (
-					<div className="flex justify-center mt-4">
-						<ul className="inline-flex items-center text-base h-10">
-							<li>
-								<button
-									onClick={handlePrevious}
-									className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 "
-									disabled={page === 1}>
-									Previous
-								</button>
-							</li>
-							{[...Array(totalPages)].map((_, i) => (
-								<li key={i}>
-									<button
-										onClick={() => handlePageClick(i + 1)}
-										className={`flex items-center justify-center px-4 h-10 leading-tight ${
-											page === i + 1
-												? "text-white bg-blue-500"
-												: "text-gray-500 bg-white"
-										} border border-gray-300 hover:bg-gray-100 hover:text-gray-700 `}>
-										{i + 1}
-									</button>
-								</li>
-							))}
-							<li>
-								<button
-									onClick={handleNext}
-									className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-									disabled={page === totalPages}>
-									Next
-								</button>
-							</li>
-						</ul>
-					</div>
-				)}
 			</div>
+			{isHomePage ? (
+				""
+			) : (
+				<div className="flex justify-center mt-4">
+					<ul className="inline-flex items-center text-base h-10">
+						<li>
+							<button
+								onClick={handlePrevious}
+								className="flex items-center justify-center px-2 sm:px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 "
+								disabled={page === 1}>
+								<MdKeyboardDoubleArrowLeft />
+							</button>
+						</li>
+						{[...Array(totalPages)].map((_, i) => (
+							<li key={i}>
+								<button
+									onClick={() => handlePageClick(i + 1)}
+									className={`flex items-center justify-center px-2 sm:px-4 h-10 leading-tight ${
+										page === i + 1
+											? "text-white bg-blue-500"
+											: "text-gray-500 bg-white"
+									} border border-gray-300 hover:bg-gray-100 hover:text-gray-700 `}>
+									{i + 1}
+								</button>
+							</li>
+						))}
+						<li>
+							<button
+								onClick={handleNext}
+								className="flex items-center justify-center px-2 sm:px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+								disabled={page === totalPages}>
+								<MdKeyboardDoubleArrowRight />
+							</button>
+						</li>
+					</ul>
+				</div>
+			)}
 		</section>
 	);
 };
