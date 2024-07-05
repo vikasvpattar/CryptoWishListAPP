@@ -43,8 +43,8 @@ const CryptoData = ({ apiData, isHomePage, searchedItem }) => {
 					<h2 className="text-white text-3xl pb-6 font-bold">All Coins</h2>
 				)}
 
-				<table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 rounded-xl overflow-hidden">
-					<thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 whitespace-nowrap">
+				<table className="w-full text-sm text-left rtl:text-right text-gray-500  rounded-xl overflow-hidden">
+					<thead className="text-xs text-gray-700 uppercase bg-gray-50 whitespace-nowrap">
 						<tr>
 							{tableHeaderData.map((data) => (
 								<th key={data} scope="col" className="px-6 py-3">
@@ -61,12 +61,10 @@ const CryptoData = ({ apiData, isHomePage, searchedItem }) => {
 							filteredData
 								.slice((page - 1) * itemsPerPage, page * itemsPerPage)
 								.map((data) => (
-									<tr
-										key={data.id}
-										className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+									<tr key={data.id} className="bg-white border-b ">
 										<th
 											scope="row"
-											className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+											className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
 											<div className="flex items-center gap-2">
 												<img src={data.image} alt={data.name} className="w-7" />
 												{data.name}
@@ -122,7 +120,7 @@ const CryptoData = ({ apiData, isHomePage, searchedItem }) => {
 						<li>
 							<button
 								onClick={handleNext}
-								className="flex items-center justify-center px-2 sm:px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+								className="flex items-center justify-center px-2 sm:px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 "
 								disabled={page === totalPages}>
 								<MdKeyboardDoubleArrowRight />
 							</button>
