@@ -9,114 +9,98 @@ const Wishlist = () => {
 		(state) => state.CryptoData
 	);
 	// console.log(list);
-	const wishlistData = JSON.parse(localStorage.getItem("wishListedCoin"));
-
-	const tableHeaderData = [
-		"coin",
-		"Price",
-		"24H High",
-		// "24H Low",
-		"Price Change",
-	];
+	const wishlistData = JSON.parse(localStorage.getItem("wishListedCoin")) || [];
+	let totalProfitLoss = 0;
+	const tableHeaderData = ["coin", "Price", "24H High", "Price Change"];
+	if (isLoading) return <Loader />;
+	if (isError) return <div className="error">Error: {isError}</div>;
+	if (wishlistData.length === 0)
+		return (
+			<h1 className="text-white text-2xl font-bold mb-4 text-center mt-40">
+				You haven't added any coin to the wishlist
+			</h1>
+		);
 	return (
 		<div className="bg-gray-900 min-h-screen py-8 px-5">
-			{isLoading ? (
-				<Loader />
-			) : isError ? (
-				<div className="error">Error: {isError}</div>
-			) : wishlistData.length > 0 ? (
-				<div>
-					<h1 className="text-white text-2xl font-bold mb-4">
-						Your Whitelisted coin
-					</h1>
-					<table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 rounded-xl overflow-hidden">
-						<thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 whitespace-nowrap">
-							<tr>
-								{tableHeaderData.map((data) => (
-									<th key={data} scope="col" className="px-6 py-3">
-										<div className="flex items-center">{data}</div>
-									</th>
-								))}
-								<th scope="col" className="px-6 py-3">
-									<span className="sr-only">View More</span>
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							{wishlistData.map((data) => {
-								const sameCoin = list?.filter((item) => item.id === data.id);
-								return sameCoin
-									? sameCoin.map((coinList) => {
-											const profit =
-												coinList?.current_price -
-												data?.currentPrice[selectedCurrency];
-
-											return (
-												<tr
-													key={coinList.id}
-													className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-													<th
-														scope="row"
-														className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-														<div className="flex items-center gap-2">
-															<img
-																src={coinList.image}
-																alt={coinList.name}
-																className="w-7"
-															/>
-															{coinList.name}
-														</div>
-													</th>
-													<td className="px-6 py-4">
-														{formatNumber(
-															coinList.current_price,
-															selectedCurrency
-														)}
-													</td>
-													<td className="px-6 py-4">
-														{formatNumber(
-															coinList.current_price,
-															selectedCurrency
-														)}
-													</td>
-													{/* <td className="px-6 py-4">
-													{formatNumber(
-														coinList.current_price,
-														selectedCurrency
-													)}
-												</td> */}
-													{/* <td className="px-6 py-4">
-													{formatNumber(
-														coinList.current_price,
-														selectedCurrency
-													)}
-												</td> */}
-													<td
-														className={`px-6 py-4 ${
-															profit > 0 ? "text-red-500" : "text-green-500"
-														}`}>
-														{formatNumber(profit, selectedCurrency)}
-													</td>
-													<td className="px-6 py-4 text-right">
-														<Link to={`/chart/${coinList.id}`}>
-															<button className="font-medium p-2 bg-green-500 text-white whitespace-nowrap">
-																View more
-															</button>
-														</Link>
-													</td>
-												</tr>
-											);
-									  })
-									: "";
-							})}
-						</tbody>
-					</table>
-				</div>
-			) : (
+			<div className="relative overflow-x-auto shadow-md sm:rounded-lg w-full max-w-6xl mx-auto my-4">
 				<h1 className="text-white text-2xl font-bold mb-4">
-					You haven't added any coin to the wishlist
+					Your Whitelisted Coins
 				</h1>
-			)}
+				<table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 rounded-xl overflow-hidden">
+					<thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 whitespace-nowrap">
+						<tr>
+							{tableHeaderData.map((data) => (
+								<th key={data} scope="col" className="px-6 py-3">
+									<div className="flex items-center">{data}</div>
+								</th>
+							))}
+							<th scope="col" className="px-6 py-3">
+								<span className="sr-only">View More</span>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						{wishlistData.map((data) => {
+							const coin = list?.find((item) => item.id === data.id);
+							if (!coin) return null;
+
+							const profit =
+								coin.current_price - data.currentPrice[selectedCurrency];
+							totalProfitLoss += profit;
+
+							return (
+								<tr
+									key={coin.id}
+									className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+									<th
+										scope="row"
+										className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+										<div className="flex items-center gap-2">
+											<img src={coin.image} alt={coin.name} className="w-7" />
+											{coin.name}
+										</div>
+									</th>
+									<td className="px-6 py-4">
+										{formatNumber(coin.current_price, selectedCurrency)}
+									</td>
+									<td className="px-6 py-4">
+										{formatNumber(coin.high_24h, selectedCurrency)}
+									</td>
+									<td
+										className={`px-6 py-4 ${
+											profit < 0 ? "text-red-500" : "text-green-500"
+										}`}>
+										{formatNumber(profit, selectedCurrency)}
+									</td>
+									<td className="px-6 py-4 text-right">
+										<Link to={`/chart/${coin.id}`}>
+											<button className="font-medium p-2 bg-green-500 text-white whitespace-nowrap">
+												View more
+											</button>
+										</Link>
+									</td>
+								</tr>
+							);
+						})}
+					</tbody>
+					<tfoot>
+						<tr>
+							<td
+								colSpan="3"
+								className="px-6 py-4 text-md font-bold text-right text-white">
+								Total Profit/Loss:
+							</td>
+							<td
+								colSpan="2"
+								className={`px-6 py-4 text-md font-bold ${
+									totalProfitLoss < 0 ? "text-red-500" : "text-green-500"
+								}`}>
+								{formatNumber(totalProfitLoss, selectedCurrency)}
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
 		</div>
 	);
 };
