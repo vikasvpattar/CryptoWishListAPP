@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import formatNumber from "../utilities/CurrencyConvert";
 import { MdFavoriteBorder } from "react-icons/md";
+import { toast, ToastContainer } from "react-toastify";
 import {
 	addToWishlist,
 	removeFromWishlist,
@@ -48,11 +49,13 @@ const MarketDetails = ({ apiData }) => {
 	const handleWishList = (id, currentPrice) => {
 		if (id && currentPrice) {
 			dispatch(addToWishlist({ id, currentPrice }));
+			toast.success("Successfully added");
 		}
 	};
 	const handleRemoveWishlist = (id) => {
 		if (id) {
 			dispatch(removeFromWishlist(id));
+			toast.warn("Successfully removed");
 		}
 	};
 

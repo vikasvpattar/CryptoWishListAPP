@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import Loader from "../components/Loader";
 import formatNumber from "../utilities/CurrencyConvert";
 import { Link } from "react-router-dom";
-
 const Wishlist = () => {
 	const { list, isLoading, isError, selectedCurrency } = useSelector(
 		(state) => state.CryptoData
