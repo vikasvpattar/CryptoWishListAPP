@@ -24,7 +24,7 @@ const Wishlist = () => {
     );
   return (
     <div className="bg-gray-900 min-h-screen py-8 px-5">
-      <h1 className="text-white text-lg sm:text-xl md:text-2xl font-bold mb-4">
+      <h1 className="text-white text-lg sm:text-xl md:text-2xl font-bold mb-4 w-full max-w-6xl mx-auto">
         Your Whitelisted Coins
       </h1>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg w-full max-w-6xl mx-auto my-4">
