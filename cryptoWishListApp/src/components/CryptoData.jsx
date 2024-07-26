@@ -36,19 +36,28 @@ const CryptoData = ({ apiData, isHomePage, searchedItem }) => {
   };
 
   return (
-    <section className="py-6">
+    <section className="py-6 w-full max-w-6xl mx-auto my-4">
+      {isHomePage ? (
+        <h2 className="text-white text-lg sm:text-xl md:text-2xl font-bold mb-4">
+          Top 10 coins
+        </h2>
+      ) : (
+        <h2 className="text-white text-lg sm:text-xl md:text-2xl font-bold mb-4">
+          All Coins
+        </h2>
+      )}
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg w-full max-w-6xl mx-auto my-4">
-        {isHomePage ? (
-          <h2 className="text-white text-3xl pb-6 font-bold">Top 10 coins</h2>
-        ) : (
-          <h2 className="text-white text-3xl pb-6 font-bold">All Coins</h2>
-        )}
-
         <table className="w-full text-sm text-left rtl:text-right text-gray-500  rounded-xl overflow-hidden">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 whitespace-nowrap">
             <tr>
-              {tableHeaderData.map((data) => (
-                <th key={data} scope="col" className="px-6 py-3">
+              {tableHeaderData.map((data, index) => (
+                <th
+                  key={data}
+                  scope="col"
+                  className={`px-6 py-3 ${
+                    index > 1 ? "hidden sm:table-cell" : ""
+                  }`}
+                >
                   <div className="flex items-center">{data}</div>
                 </th>
               ))}
@@ -83,16 +92,16 @@ const CryptoData = ({ apiData, isHomePage, searchedItem }) => {
                           {data.name}
                         </div>
                       </th>
-                      <td className="px-6 py-4">
+                      <td className="px-3 py-2 sm:px-6 sm:py-4">
                         {formatNumber(data.current_price, selectedCurrency)}
                       </td>
-                      <td className="px-6 py-4">
-                        {formatNumber(data.current_price, selectedCurrency)}
+                      <td className="px-6 py-4 hidden sm:table-cell">
+                        {formatNumber(data.high_24h, selectedCurrency)}
                       </td>
-                      <td className="px-6 py-4">
-                        {formatNumber(data.current_price, selectedCurrency)}
+                      <td className="px-6 py-4 hidden sm:table-cell">
+                        {formatNumber(data.low_24h, selectedCurrency)}
                       </td>
-                      <td className="px-6 py-4 text-right">
+                      <td className="px-3 py-2 sm:px-6 sm:py-4 ">
                         <Link to={`/chart/${data.id}`}>
                           <motion.button
                             whileHover={{ scale: 1.1 }}

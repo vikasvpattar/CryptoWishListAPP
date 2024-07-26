@@ -100,7 +100,7 @@ const ChartComp = () => {
       <Loader />
     </div>
   ) : (
-    <div className="w-[60vw] mx-auto my-10">
+    <div className=" w-full md:w-3/4 mx-auto my-10">
       <Line data={chartData} options={options} />
     </div>
   );

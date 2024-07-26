@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { motion } from "framer-motion";
 import Loader from "../components/Loader";
 import formatNumber from "../utilities/CurrencyConvert";
 import { Link } from "react-router-dom";
@@ -23,10 +24,10 @@ const Wishlist = () => {
     );
   return (
     <div className="bg-gray-900 min-h-screen py-8 px-5">
+      <h1 className="text-white text-lg sm:text-xl md:text-2xl font-bold mb-4">
+        Your Whitelisted Coins
+      </h1>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg w-full max-w-6xl mx-auto my-4">
-        <h1 className="text-white text-2xl font-bold mb-4">
-          Your Whitelisted Coins
-        </h1>
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 rounded-xl overflow-hidden">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 whitespace-nowrap">
             <tr>
@@ -50,13 +51,10 @@ const Wishlist = () => {
               totalProfitLoss += profit;
 
               return (
-                <tr
-                  key={coin.id}
-                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                >
+                <tr key={coin.id} className="bg-white border-b ">
                   <th
                     scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                   >
                     <div className="flex items-center gap-2">
                       <img src={coin.image} alt={coin.name} className="w-7" />
@@ -76,11 +74,14 @@ const Wishlist = () => {
                   >
                     {formatNumber(profit, selectedCurrency)}
                   </td>
-                  <td className="px-6 py-4 text-right">
+                  <td className="px-6 py-4">
                     <Link to={`/chart/${coin.id}`}>
-                      <button className="font-medium p-2 bg-green-500 text-white whitespace-nowrap">
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        className="font-medium p-2 bg-green-500 text-white whitespace-nowrap rounded-md"
+                      >
                         View more
-                      </button>
+                      </motion.button>
                     </Link>
                   </td>
                 </tr>

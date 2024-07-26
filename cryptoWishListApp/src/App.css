@@ -1,6 +1,9 @@
 .description p a {
-	color: #7171ff;
+  color: #7171ff;
 }
 .description p {
-	color: #fff;
+  color: #fff;
+}
+.description .read {
+  color: gray;
 }
