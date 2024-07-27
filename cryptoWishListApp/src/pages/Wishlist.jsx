@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Loader from "../components/Loader";
 import formatNumber from "../utilities/CurrencyConvert";
 import { Link } from "react-router-dom";
@@ -43,51 +43,59 @@ const Wishlist = () => {
             </tr>
           </thead>
           <tbody>
-            {wishlistData.map((data) => {
-              const coin = list?.find((item) => item.id === data.id);
-              if (!coin) return null;
+            <AnimatePresence>
+              {wishlistData.map((data, i) => {
+                const coin = list?.find((item) => item.id === data.id);
+                if (!coin) return null;
 
-              const profit =
-                coin.current_price - data.currentPrice[selectedCurrency];
-              totalProfitLoss += profit;
+                const profit =
+                  coin.current_price - data.currentPrice[selectedCurrency];
+                totalProfitLoss += profit;
 
-              return (
-                <tr key={coin.id} className="bg-white border-b ">
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                return (
+                  <motion.tr
+                    key={coin.id}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: i * 0.1 }}
+                    className="bg-white border-b "
                   >
-                    <div className="flex items-center gap-2">
-                      <img src={coin.image} alt={coin.name} className="w-7" />
-                      {coin.name}
-                    </div>
-                  </th>
-                  <td className="px-6 py-4">
-                    {formatNumber(coin.current_price, selectedCurrency)}
-                  </td>
-                  <td className="px-6 py-4">
-                    {formatNumber(coin.high_24h, selectedCurrency)}
-                  </td>
-                  <td
-                    className={`px-6 py-4 ${
-                      profit < 0 ? "text-red-500" : "text-green-500"
-                    }`}
-                  >
-                    {formatNumber(profit, selectedCurrency)}
-                  </td>
-                  <td className="px-6 py-4">
-                    <Link to={`/chart/${coin.id}`}>
-                      <motion.button
-                        whileHover={{ scale: 1.1 }}
-                        className="font-medium p-2 bg-green-500 text-white whitespace-nowrap rounded-md"
-                      >
-                        View more
-                      </motion.button>
-                    </Link>
-                  </td>
-                </tr>
-              );
-            })}
+                    <th
+                      scope="row"
+                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                    >
+                      <div className="flex items-center gap-2">
+                        <img src={coin.image} alt={coin.name} className="w-7" />
+                        {coin.name}
+                      </div>
+                    </th>
+                    <td className="px-6 py-4">
+                      {formatNumber(coin.current_price, selectedCurrency)}
+                    </td>
+                    <td className="px-6 py-4">
+                      {formatNumber(coin.high_24h, selectedCurrency)}
+                    </td>
+                    <td
+                      className={`px-6 py-4 ${
+                        profit < 0 ? "text-red-500" : "text-green-500"
+                      }`}
+                    >
+                      {formatNumber(profit, selectedCurrency)}
+                    </td>
+                    <td className="px-6 py-4">
+                      <Link to={`/chart/${coin.id}`}>
+                        <motion.button
+                          whileHover={{ scale: 1.1 }}
+                          className="font-medium p-2 bg-green-500 text-white whitespace-nowrap rounded-md"
+                        >
+                          View more
+                        </motion.button>
+                      </Link>
+                    </td>
+                  </motion.tr>
+                );
+              })}
+            </AnimatePresence>
           </tbody>
           <tfoot>
             <tr>

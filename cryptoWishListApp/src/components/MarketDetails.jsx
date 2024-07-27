@@ -61,10 +61,12 @@ const MarketDetails = ({ apiData }) => {
   };
 
   return (
-    <div className="text-white flex flex-col gap-2 justify-center items-center my-5">
+    <div className="text-white flex flex-col gap-2 justify-center items-center my-5 ">
       <div>
         <div className="flex gap-2 items-center leading-normal">
-          {image && <img src={image.small} alt={name} />}
+          {image && (
+            <img src={image.small} alt={name} className="w-8 sm:w-10" />
+          )}
           <span className="text-xl">{name}</span>
           <span className="uppercase text-xs">{symbol} Price</span>
           <span className="text-xs bg-gray-600 py-1 px-2 rounded-lg">
@@ -87,7 +89,7 @@ const MarketDetails = ({ apiData }) => {
           !wishListedData.includes(id) ? (
             <motion.button
               whileHover={{ scale: 1.1 }}
-              className="p-2 bg-green-600 rounded-md flex items-center gap-2"
+              className="p-2 my-2 bg-green-600 rounded-md flex items-center gap-2"
               onClick={() => handleWishList(id, current_price)}
             >
               <MdFavoriteBorder /> Add to WishList
@@ -95,7 +97,7 @@ const MarketDetails = ({ apiData }) => {
           ) : (
             <motion.button
               whileHover={{ scale: 1.1 }}
-              className="p-2 bg-red-600 rounded-md flex items-center gap-2 "
+              className="p-2 my-2 bg-red-600 rounded-md flex items-center gap-2 "
               onClick={() => handleRemoveWishlist(id)}
             >
               <MdFavoriteBorder /> Remove from WishList
@@ -105,7 +107,7 @@ const MarketDetails = ({ apiData }) => {
           ""
         )}
       </div>
-      <div className="border-2 border-white flex flex-col gap-2 p-4 w-11/12 md:w-1/2 rounded-xl">
+      <div className="border-2 border-white flex flex-col gap-2 p-2 w-full md:w-1/2 rounded-xl">
         <MarketInfo
           label="All Time High"
           value={ath && formatNumber(ath[selectedCurrency], selectedCurrency)}

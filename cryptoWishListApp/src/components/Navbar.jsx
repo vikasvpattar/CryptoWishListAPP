@@ -4,6 +4,7 @@ import {
   getAllData,
   setSelectedCurrency,
 } from "../features/cryptoData/cryptoDataSlice";
+import { AnimatePresence, motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdCancel } from "react-icons/md";
@@ -14,6 +15,7 @@ const navList = [
   { value: "Coins", href: "coins" },
   { value: "Wishlist", href: "wishlist" },
 ];
+
 const FiatCurrency = [
   { label: "USD", id: "usd" },
   { label: "INR", id: "inr" },
@@ -55,7 +57,7 @@ const Navbar = () => {
             </NavLink>
           ))}
         </div>
-        <div className="hidden md:block">
+        <div>
           <select
             name="currency"
             id="currency"
@@ -72,36 +74,40 @@ const Navbar = () => {
         </div>
         <div className="block md:hidden">
           <button
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5"
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5"
             type="button"
             onClick={() => setIsNavOpen(!isNavOpen)}
           >
             <GiHamburgerMenu />
           </button>
-          <div
-            id="drawer-right-example"
-            className={`fixed top-0 right-0 z-40 h-screen p-4 overflow-y-auto bg-white sm:w-80 w-48 dark:bg-gray-800 transition-transform ${
-              isNavOpen ? "translate-x-0" : "translate-x-full"
-            }`}
-          >
-            <h5 className="inline-flex items-center mb-4 text-base font-semibold text-gray-500 dark:text-gray-400">
-              Links
-            </h5>
-            <button
-              type="button"
-              onClick={() => setIsNavOpen(!isNavOpen)}
-              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 absolute top-2.5 right-2.5 inline-flex items-center justify-center dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              <MdCancel />
-            </button>
-            <ul className="flex flex-col gap-4 text-blue-600">
-              {navList.map((item) => (
-                <NavLink key={item.value} to={`/${item.href}`}>
-                  {item.value}
-                </NavLink>
-              ))}
-            </ul>
-          </div>
+          <AnimatePresence>
+            {isNavOpen && (
+              <div className="fixed top-0 right-0 z-40 h-screen p-4 overflow-y-auto bg-white sm:w-80 w-48 dark:bg-gray-800 transition-transform">
+                <h5 className="inline-flex items-center mb-4 text-base font-bold text-yellow-500 dark:text-gray-400">
+                  Cryptos
+                </h5>
+                <button
+                  type="button"
+                  onClick={() => setIsNavOpen(!isNavOpen)}
+                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-lg w-8 h-8 absolute top-2.5 right-2.5 inline-flex items-center justify-center dark:hover:bg-gray-600 dark:hover:text-white"
+                >
+                  <MdCancel />
+                </button>
+                <ul className="flex flex-col gap-4 text-blue-600">
+                  {navList.map((item, i) => (
+                    <motion.li
+                      key={item.value}
+                      initial={{ x: -100 }}
+                      animate={{ x: 0 }}
+                      transition={{ delay: i * 0.1 }}
+                    >
+                      <NavLink to={`/${item.href}`}>{item.value}</NavLink>
+                    </motion.li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </AnimatePresence>
         </div>
       </nav>
     </header>

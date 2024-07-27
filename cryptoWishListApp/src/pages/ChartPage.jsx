@@ -44,7 +44,7 @@ const ChartPage = () => {
   const desc = apiData?.description?.en;
 
   return (
-    <div className="bg-gray-900 min-h-screen py-8 px-5">
+    <div className="bg-gray-900 min-h-screen py-4 px-2 sm:py-8 sm:px-5">
       <div className="mx-auto w-full max-w-6xl">
         <ChartComp />
         <MarketDetails apiData={apiData} />
