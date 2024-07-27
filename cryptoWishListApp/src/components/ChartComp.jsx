@@ -28,7 +28,7 @@ const ChartComp = () => {
       setApiData(response.data);
       setIsLoading(false);
     } catch (error) {
-      setError(error || "Error fetching data");
+      setError(error);
       setIsLoading(false);
       console.error("Error fetching data:", error);
     }
