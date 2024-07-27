@@ -5,11 +5,13 @@ import { Line } from "react-chartjs-2";
 import { Chart as ChartJS, Ticks, scales } from "chart.js/auto"; // Don't remove this
 import { useSelector } from "react-redux";
 import Loader from "./Loader";
+import APIError from "./APIError";
 
 const ChartComp = () => {
   const { id } = useParams();
   const [apiData, setApiData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const currency = useSelector((state) => state.CryptoData.selectedCurrency);
 
   const fetchCryptoPrice = async () => {
@@ -26,6 +28,8 @@ const ChartComp = () => {
       setApiData(response.data);
       setIsLoading(false);
     } catch (error) {
+      setError(error || "Error fetching data");
+      setIsLoading(false);
       console.error("Error fetching data:", error);
     }
   };
@@ -95,12 +99,23 @@ const ChartComp = () => {
       },
     },
   };
-  return isLoading ? (
-    <div className="h-[60vh] flex justify-center items-center">
-      <Loader />
-    </div>
-  ) : (
-    <div className=" w-full md:w-3/4 mx-auto my-10">
+  if (isLoading) {
+    return (
+      <div className="h-[60vh] flex justify-center items-center">
+        <Loader />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <di>
+        <APIError message={error} />
+      </di>
+    );
+  }
+  return (
+    <div className="w-full md:w-3/4 mx-auto my-10">
       <Line data={chartData} options={options} />
     </div>
   );

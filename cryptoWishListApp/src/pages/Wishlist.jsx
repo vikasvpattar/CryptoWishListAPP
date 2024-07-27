@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Loader from "../components/Loader";
 import formatNumber from "../utilities/CurrencyConvert";
 import { Link } from "react-router-dom";
+import APIError from "../components/APIError";
 const Wishlist = () => {
   const { list, isLoading, isError, selectedCurrency } = useSelector(
     (state) => state.CryptoData
@@ -13,7 +14,7 @@ const Wishlist = () => {
   let totalProfitLoss = 0;
   const tableHeaderData = ["coin", "Price", "24H High", "Price Change"];
   if (isLoading) return <Loader />;
-  if (isError) return <div className="error">Error: {isError}</div>;
+  if (isError) return <APIError message={isError} />;
   if (wishlistData.length === 0)
     return (
       <div className="bg-gray-900 h-screen flex justify-center items-center">

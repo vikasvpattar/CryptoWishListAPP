@@ -11,11 +11,13 @@ import { store } from "./app/store.js";
 import { Provider } from "react-redux";
 import Loader from "./components/Loader.jsx";
 import Wishlist from "./pages/Wishlist.jsx";
+import Error from "./components/Error.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: <Error />,
     children: [
       { path: "/", element: <Home /> },
       { path: "/home", element: <Home /> },
@@ -23,6 +25,7 @@ const router = createBrowserRouter([
       { path: "/chart/:id", element: <ChartPage /> },
       { path: "/coins", element: <CoinsPage /> },
       { path: "/loader", element: <Loader /> },
+      { path: "/error", element: <Error /> },
     ],
   },
 ]);

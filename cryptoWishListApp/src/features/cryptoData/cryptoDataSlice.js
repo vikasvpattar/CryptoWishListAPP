@@ -23,6 +23,7 @@ export const getAllData = createAsyncThunk(
         const errorData = await response.json();
         return rejectWithValue(errorData);
       }
+
       return await response.json();
     } catch (error) {
       return rejectWithValue(error.message);

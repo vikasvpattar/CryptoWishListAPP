@@ -3,6 +3,7 @@ import { CiSearch } from "react-icons/ci";
 import CryptoData from "../components/CryptoData";
 import { useSelector } from "react-redux";
 import Loader from "../components/Loader";
+import APIError from "../components/APIError";
 
 const CoinsPage = () => {
   const { list, isLoading, isError } = useSelector((state) => state.CryptoData);
@@ -25,7 +26,7 @@ const CoinsPage = () => {
         {isLoading ? (
           <Loader />
         ) : isError ? (
-          <div className="error">Error: {isError}</div>
+          <APIError message={isError} />
         ) : (
           <CryptoData apiData={list} searchedItem={search} />
         )}
