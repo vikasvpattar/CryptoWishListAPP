@@ -1,10 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
+const API_URL = "https://api.coingecko.com/api/v3/coins/markets";
+const API_KEY = "CG-ntsXi9EVwHMMe6NXhyJjvAmU";
+
 const options = {
   method: "GET",
   headers: {
     accept: "application/json",
-    "x-cg-demo-api-key": "CG-ntsXi9EVwHMMe6NXhyJjvAmU",
+    "x-cg-demo-api-key": API_KEY,
   },
 };
 
@@ -13,19 +16,20 @@ export const getAllData = createAsyncThunk(
   async (currency = "usd", { rejectWithValue }) => {
     try {
       const response = await fetch(
-        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&order=market_cap_desc&per_page=100&page=1&sparkline=false`,
+        `${API_URL}?vs_currency=${currency}&order=market_cap_desc&per_page=100&page=1&sparkline=false`,
         options
       );
-      const data = await response.json();
       if (!response.ok) {
-        return rejectWithValue(data);
+        const errorData = await response.json();
+        return rejectWithValue(errorData);
       }
-      return data;
+      return await response.json();
     } catch (error) {
       return rejectWithValue(error.message);
     }
   }
 );
+
 const initialWishlist =
   JSON.parse(localStorage.getItem("wishListedCoin")) || [];
 const initialCurrency =
@@ -72,8 +76,8 @@ export const cryptoDataSlice = createSlice({
       })
       .addCase(getAllData.rejected, (state, action) => {
         state.isLoading = false;
-        console.log(action);
-        state.isError = action.error.message;
+        console.error("Fetch error:", action.payload);
+        state.isError = action.payload || action.error.message;
       });
   },
 });
