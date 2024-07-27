@@ -2,6 +2,7 @@ import React from "react";
 import heroImage from "../assets/MockupheroImage.png";
 import CryptoData from "../components/CryptoData";
 import { useSelector } from "react-redux";
+import APIError from "../components/APIError.jsx";
 import Loader from "../components/Loader";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -49,7 +50,7 @@ const Home = () => {
       {isLoading ? (
         <Loader />
       ) : isError ? (
-        <div className="error">Error: {isError}</div>
+        <APIError message={isError} />
       ) : (
         <CryptoData apiData={list} isHomePage={true} />
       )}
