@@ -121,11 +121,11 @@ const CryptoData = ({ apiData, isHomePage, searchedItem }) => {
         ""
       ) : (
         <div className="flex justify-center mt-4">
-          <ul className="inline-flex items-center text-base h-10">
+          <ul className="inline-flex items-center text-sm h-10">
             <li>
               <button
                 onClick={handlePrevious}
-                className="flex items-center justify-center px-2 sm:px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 "
+                className="flex items-center justify-center px-1 sm:px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 "
                 disabled={page === 1}
               >
                 <MdKeyboardDoubleArrowLeft />
