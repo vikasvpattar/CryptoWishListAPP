@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import cryptos from "../assets/Cryptos.png";
 import {
   getAllData,
@@ -41,6 +41,18 @@ const Navbar = () => {
     },
     [dispatch]
   );
+  const drawRef = useRef();
+  useEffect(() => {
+    const handleMouseDown = (e) => {
+      if (!drawRef.current.contains(e.target)) {
+        setIsNavOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleMouseDown);
+    return () => {
+      document.removeEventListener("mousedown", handleMouseDown);
+    };
+  }, []);
 
   return (
     <header className="bg-blue-700 w-full sticky z-30 top-0 px-5">
@@ -72,7 +84,7 @@ const Navbar = () => {
             ))}
           </select>
         </div>
-        <div className="block md:hidden">
+        <div ref={drawRef} className="block md:hidden">
           <button
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5"
             type="button"
