@@ -113,7 +113,12 @@ const Navbar = () => {
                       animate={{ x: 0 }}
                       transition={{ delay: i * 0.1 }}
                     >
-                      <NavLink to={`/${item.href}`}>{item.value}</NavLink>
+                      <NavLink
+                        onClick={() => setIsNavOpen(false)}
+                        to={`/${item.href}`}
+                      >
+                        {item.value}
+                      </NavLink>
                     </motion.li>
                   ))}
                 </ul>
