@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import heroImage from "../assets/MockupheroImage.png";
 import CryptoData from "../components/CryptoData";
 import { useSelector } from "react-redux";
@@ -8,10 +8,18 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const Home = () => {
   const { list, isLoading, isError } = useSelector((state) => state.CryptoData);
+  const [initialData, setInitialData] = useState(null);
+
+  useEffect(() => {
+    if (!isLoading && !isError && list.length > 0) {
+      // Store the initially fetched data
+      setInitialData(list);
+    }
+  }, [isLoading, isError, list]);
 
   return (
-    <div className="bg-gray-900	min-h-screen px-5 mx-auto">
-      <div className="flex flex-col md:flex-row gap-3 justify-between  items-center text-white w-full max-w-6xl mx-auto py-4">
+    <div className="bg-gray-900 min-h-screen px-5 mx-auto">
+      <div className="flex flex-col md:flex-row gap-3 justify-between items-center text-white w-full max-w-6xl mx-auto py-4">
         <div>
           <motion.h1
             initial={{ opacity: 0, x: 50 }}
@@ -42,7 +50,7 @@ const Home = () => {
                 repeat: Infinity,
               }}
             >
-              <img src={heroImage} alt="cryptoImage" className="w-full " />
+              <img src={heroImage} alt="cryptoImage" className="w-full" />
             </motion.div>
           </AnimatePresence>
         </div>
@@ -50,7 +58,11 @@ const Home = () => {
       {isLoading ? (
         <Loader />
       ) : isError ? (
-        <APIError message={isError} />
+        initialData ? (
+          <CryptoData apiData={initialData} isHomePage={true} />
+        ) : (
+          <APIError message={isError} />
+        )
       ) : (
         <CryptoData apiData={list} isHomePage={true} />
       )}

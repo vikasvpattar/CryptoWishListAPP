@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useCallback, useRef } from "react";
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  useRef,
+  useMemo,
+} from "react";
 import cryptos from "../assets/Cryptos.png";
 import {
   getAllData,
@@ -16,7 +22,7 @@ const navList = [
   { value: "Wishlist", href: "wishlist" },
 ];
 
-const FiatCurrency = [
+const fiatCurrency = [
   { label: "USD", id: "usd" },
   { label: "INR", id: "inr" },
 ];
@@ -26,12 +32,20 @@ const Navbar = () => {
   const selectedCurrency = useSelector(
     (state) => state.CryptoData.selectedCurrency
   );
-  const storedCurrency = JSON.parse(localStorage.getItem("currencyValue"));
   const dispatch = useDispatch();
+  const drawRef = useRef();
+
+  const storedCurrency = useMemo(
+    () => JSON.parse(localStorage.getItem("currencyValue")) || "usd",
+    []
+  );
 
   useEffect(() => {
+    if (selectedCurrency !== storedCurrency) {
+      localStorage.setItem("currencyValue", JSON.stringify(selectedCurrency));
+    }
     dispatch(getAllData(selectedCurrency));
-  }, [dispatch, selectedCurrency]);
+  }, [dispatch, selectedCurrency, storedCurrency]);
 
   const handleSelect = useCallback(
     (e) => {
@@ -41,10 +55,10 @@ const Navbar = () => {
     },
     [dispatch]
   );
-  const drawRef = useRef();
+
   useEffect(() => {
     const handleMouseDown = (e) => {
-      if (!drawRef.current.contains(e.target)) {
+      if (drawRef.current && !drawRef.current.contains(e.target)) {
         setIsNavOpen(false);
       }
     };
@@ -57,7 +71,7 @@ const Navbar = () => {
   return (
     <header className="bg-blue-700 w-full sticky z-30 top-0 px-5">
       <nav className="flex justify-between items-center mx-auto w-full max-w-6xl py-4 text-white font-bold">
-        <NavLink to={"/"}>
+        <NavLink to="/">
           <div className="w-32">
             <img src={cryptos} alt="Cryptos" />
           </div>
@@ -73,11 +87,11 @@ const Navbar = () => {
           <select
             name="currency"
             id="currency"
-            className="bg-transparent py-1 px-2  rounded-lg"
+            className="bg-transparent py-1 px-2 rounded-lg"
             defaultValue={storedCurrency}
             onChange={handleSelect}
           >
-            {FiatCurrency.map((data) => (
+            {fiatCurrency.map((data) => (
               <option key={data.id} className="bg-blue-500" value={data.id}>
                 {data.label}
               </option>

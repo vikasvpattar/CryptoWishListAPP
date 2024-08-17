@@ -8,6 +8,12 @@ import APIError from "../components/APIError";
 const CoinsPage = () => {
   const { list, isLoading, isError } = useSelector((state) => state.CryptoData);
   const [search, setSearch] = useState("");
+  if (isError) {
+    return <APIError message={isError} />;
+  }
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <div className="bg-gray-900 min-h-screen">
@@ -23,13 +29,7 @@ const CoinsPage = () => {
             placeholder="Search"
           />
         </div>
-        {isLoading ? (
-          <Loader />
-        ) : isError ? (
-          <APIError message={isError} />
-        ) : (
-          <CryptoData apiData={list} searchedItem={search} />
-        )}
+        <CryptoData apiData={list} searchedItem={search} />
       </div>
     </div>
   );

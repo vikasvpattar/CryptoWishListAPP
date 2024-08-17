@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Line } from "react-chartjs-2";
 import { Chart as ChartJS, Ticks, scales } from "chart.js/auto"; // Don't remove this
@@ -14,7 +14,7 @@ const ChartComp = () => {
   const [error, setError] = useState(null);
   const currency = useSelector((state) => state.CryptoData.selectedCurrency);
 
-  const fetchCryptoPrice = async () => {
+  const fetchCryptoPrice = useCallback(async () => {
     const options = {
       method: "GET",
       url: `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=${currency}&days=30&interval=daily`,
@@ -32,12 +32,12 @@ const ChartComp = () => {
       setIsLoading(false);
       console.error("Error fetching data:", error);
     }
-  };
+  }, [id, currency]);
   useEffect(() => {
     setIsLoading(true);
 
     fetchCryptoPrice();
-  }, [currency]);
+  }, [id, currency]);
   const gettingDate = (number) => {
     const date = new Date(number);
     return date.getDate() + "/" + (date.getMonth() + 1);
