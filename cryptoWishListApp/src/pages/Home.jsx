@@ -1,21 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import heroImage from "../assets/MockupheroImage.png";
 import CryptoData from "../components/CryptoData";
-import { useSelector } from "react-redux";
 import APIError from "../components/APIError.jsx";
 import Loader from "../components/Loader";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSelector } from "react-redux";
+import { useGetAllDataQuery } from "../features/cryptoApi"; // Import the RTK Query hook
 
 const Home = () => {
-  const { list, isLoading, isError } = useSelector((state) => state.CryptoData);
-  const [initialData, setInitialData] = useState(null);
+  const selectedCurrency = useSelector(
+    (state) => state.CryptoData.selectedCurrency
+  ); // Get selected currency from Redux
 
-  useEffect(() => {
-    if (!isLoading && !isError && list.length > 0) {
-      // Store the initially fetched data
-      setInitialData(list);
-    }
-  }, [isLoading, isError, list]);
+  // Use the RTK Query hook to fetch data based on the selected currency
+  const { data: list, error, isLoading } = useGetAllDataQuery(selectedCurrency);
 
   return (
     <div className="bg-gray-900 min-h-screen px-5 mx-auto">
@@ -55,14 +53,12 @@ const Home = () => {
           </AnimatePresence>
         </div>
       </div>
+
+      {/* Handle loading, error, and data rendering using RTK Query */}
       {isLoading ? (
         <Loader />
-      ) : isError ? (
-        initialData ? (
-          <CryptoData apiData={initialData} isHomePage={true} />
-        ) : (
-          <APIError message={isError} />
-        )
+      ) : error ? (
+        <APIError message={error.message || "Something went wrong"} />
       ) : (
         <CryptoData apiData={list} isHomePage={true} />
       )}

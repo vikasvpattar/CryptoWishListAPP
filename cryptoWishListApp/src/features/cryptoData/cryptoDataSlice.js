@@ -1,53 +1,29 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
-const API_URL = "https://api.coingecko.com/api/v3/coins/markets";
-const API_KEY = "CG-ntsXi9EVwHMMe6NXhyJjvAmU";
-
-const options = {
-  method: "GET",
-  headers: {
-    accept: "application/json",
-    "x-cg-demo-api-key": API_KEY,
-  },
+// Utility functions for localStorage
+const getFromLocalStorage = (key, defaultValue) => {
+  const item = localStorage.getItem(key);
+  return item ? JSON.parse(item) : defaultValue;
 };
 
-export const getAllData = createAsyncThunk(
-  "cryptoData/getAllData",
-  async (currency = "usd", { rejectWithValue }) => {
-    try {
-      const response = await fetch(
-        `${API_URL}?vs_currency=${currency}&order=market_cap_desc&per_page=100&page=1&sparkline=false`,
-        options
-      );
-      if (!response.ok) {
-        const errorData = await response.json();
-        return rejectWithValue(errorData);
-      }
+const setToLocalStorage = (key, value) => {
+  localStorage.setItem(key, JSON.stringify(value));
+};
 
-      return await response.json();
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
-
-const initialWishlist =
-  JSON.parse(localStorage.getItem("wishListedCoin")) || [];
-const initialCurrency =
-  JSON.parse(localStorage.getItem("currencyValue")) || "usd";
+// Initial state from localStorage
+const initialWishlist = getFromLocalStorage("wishListedCoin", []);
+const initialCurrency = getFromLocalStorage("currencyValue", "usd");
 
 export const cryptoDataSlice = createSlice({
   name: "CryptoData",
   initialState: {
-    list: [],
-    isLoading: false,
-    isError: null,
     selectedCurrency: initialCurrency,
     wishlist: initialWishlist,
   },
   reducers: {
     setSelectedCurrency: (state, action) => {
       state.selectedCurrency = action.payload;
+      setToLocalStorage("currencyValue", action.payload); // Persist selected currency to localStorage
     },
     addToWishlist: (state, action) => {
       const existingCoin = state.wishlist.find(
@@ -55,34 +31,22 @@ export const cryptoDataSlice = createSlice({
       );
       if (!existingCoin) {
         state.wishlist.push(action.payload);
-        localStorage.setItem("wishListedCoin", JSON.stringify(state.wishlist));
+        setToLocalStorage("wishListedCoin", state.wishlist); // Persist wishlist to localStorage
       }
     },
     removeFromWishlist: (state, action) => {
-      state.wishlist = state.wishlist.filter(
+      const updatedWishlist = state.wishlist.filter(
         (item) => item.id !== action.payload
       );
-      localStorage.setItem("wishListedCoin", JSON.stringify(state.wishlist));
+      state.wishlist = updatedWishlist;
+      setToLocalStorage("wishListedCoin", state.wishlist); // Persist wishlist to localStorage
     },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(getAllData.pending, (state) => {
-        state.isLoading = true;
-        state.isError = null;
-      })
-      .addCase(getAllData.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.list = action.payload;
-      })
-      .addCase(getAllData.rejected, (state, action) => {
-        state.isLoading = false;
-        console.error("Fetch error:", action.payload);
-        state.isError = action.payload || action.error.message;
-      });
   },
 });
 
+// Exporting actions for use in components
 export const { setSelectedCurrency, addToWishlist, removeFromWishlist } =
   cryptoDataSlice.actions;
+
+// Export the reducer
 export default cryptoDataSlice.reducer;

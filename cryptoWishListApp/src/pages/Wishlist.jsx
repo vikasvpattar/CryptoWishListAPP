@@ -5,24 +5,38 @@ import Loader from "../components/Loader";
 import formatNumber from "../utilities/CurrencyConvert";
 import { Link } from "react-router-dom";
 import APIError from "../components/APIError";
+import { useGetAllDataQuery } from "../features/cryptoApi"; // Import RTK Query hook
+
 const Wishlist = () => {
-  const { list, isLoading, isError, selectedCurrency } = useSelector(
-    (state) => state.CryptoData
+  const selectedCurrency = useSelector(
+    (state) => state.CryptoData.selectedCurrency
   );
-  // console.log(list);
-  const wishlistData = JSON.parse(localStorage.getItem("wishListedCoin")) || [];
-  let totalProfitLoss = 0;
-  const tableHeaderData = ["coin", "Price", "24H High", "Price Change"];
+  const wishlist = useSelector((state) => state.CryptoData.wishlist); // Get wishlist from Redux
+
+  // Use RTK Query to fetch the latest coin data
+  const { data: list, isLoading, error } = useGetAllDataQuery(selectedCurrency);
+
+  // Handle loading state
   if (isLoading) return <Loader />;
-  if (isError) return <APIError message={isError} />;
-  if (wishlistData.length === 0)
+
+  // Handle error state
+  if (error)
+    return <APIError message={error.message || "Something went wrong"} />;
+
+  // If wishlist is empty, show message
+  if (wishlist.length === 0) {
     return (
       <div className="bg-gray-900 h-screen flex justify-center items-center">
         <h1 className="text-white text-2xl font-bold text-center">
-          You haven't added any coin to the wishlist
+          You haven't added any coins to the wishlist
         </h1>
       </div>
     );
+  }
+
+  let totalProfitLoss = 0;
+  const tableHeaderData = ["Coin", "Price", "24H High", "Price Change"];
+
   return (
     <div className="bg-gray-900 min-h-screen py-8 px-5">
       <h1 className="text-white text-lg sm:text-xl md:text-2xl font-bold mb-4 w-full max-w-6xl mx-auto">
@@ -32,9 +46,9 @@ const Wishlist = () => {
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 rounded-xl overflow-hidden">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 whitespace-nowrap">
             <tr>
-              {tableHeaderData.map((data) => (
-                <th key={data} scope="col" className="px-6 py-3">
-                  <div className="flex items-center">{data}</div>
+              {tableHeaderData.map((header) => (
+                <th key={header} scope="col" className="px-6 py-3">
+                  {header}
                 </th>
               ))}
               <th scope="col" className="px-6 py-3">
@@ -44,12 +58,12 @@ const Wishlist = () => {
           </thead>
           <tbody>
             <AnimatePresence>
-              {wishlistData.map((data, i) => {
-                const coin = list?.find((item) => item.id === data.id);
+              {wishlist.map((wishItem, i) => {
+                const coin = list?.find((item) => item.id === wishItem.id);
                 if (!coin) return null;
 
                 const profit =
-                  coin.current_price - data.currentPrice[selectedCurrency];
+                  coin.current_price - wishItem.currentPrice[selectedCurrency];
                 totalProfitLoss += profit;
 
                 return (
@@ -58,7 +72,7 @@ const Wishlist = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: i * 0.1 }}
-                    className="bg-white border-b "
+                    className="bg-white border-b"
                   >
                     <th
                       scope="row"

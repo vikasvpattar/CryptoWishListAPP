@@ -6,15 +6,13 @@ import React, {
   useMemo,
 } from "react";
 import cryptos from "../assets/Cryptos.png";
-import {
-  getAllData,
-  setSelectedCurrency,
-} from "../features/cryptoData/cryptoDataSlice";
+import { setSelectedCurrency } from "../features/cryptoData/cryptoDataSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useGetAllDataQuery } from "../features/cryptoApi"; // Import the RTK Query hook
 import { AnimatePresence, motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdCancel } from "react-icons/md";
-import { useDispatch, useSelector } from "react-redux";
 
 const navList = [
   { value: "Home", href: "home" },
@@ -35,6 +33,9 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const drawRef = useRef();
 
+  // Fetch the crypto data using RTK Query and pass the selected currency as an argument
+  const { data, error, isLoading } = useGetAllDataQuery(selectedCurrency);
+
   const storedCurrency = useMemo(
     () => JSON.parse(localStorage.getItem("currencyValue")) || "usd",
     []
@@ -44,8 +45,7 @@ const Navbar = () => {
     if (selectedCurrency !== storedCurrency) {
       localStorage.setItem("currencyValue", JSON.stringify(selectedCurrency));
     }
-    dispatch(getAllData(selectedCurrency));
-  }, [dispatch, selectedCurrency, storedCurrency]);
+  }, [selectedCurrency, storedCurrency]);
 
   const handleSelect = useCallback(
     (e) => {
